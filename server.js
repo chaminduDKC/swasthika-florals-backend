@@ -31,8 +31,8 @@ app.use(cors({
         process.env.CLIENT_URL,
         'http://localhost:5174',
     'http://localhost:5173',
-    'http://192.168.8.100:5174',
-    'http://192.168.8.100:5173',
+    'http://192.168.8.103:5174',
+    'http://192.168.8.103:5173',
     ],
     credentials:true,
     methods:["GET", "POST", "DELETE", "PUT"]
@@ -51,6 +51,10 @@ app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/categories", CategoryRoute);
 app.use("/api/v1/contact", ContactRoute);
 app.use("/api/v1/emails", EmailRoute);
+
+app.get('/api/v1/health', (req, res)=>{
+    return res.status(200).json({msg:"healthy"})
+})
 
 app.use((req, res, next) => {
   res.status(404).send('404 - Route Not Found');
