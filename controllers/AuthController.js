@@ -14,14 +14,14 @@ const createRefreshToken = (id) => jwt.sign({ id }, process.env.REFRESH_TOKEN, {
 const accessCookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
+  sameSite: 'none',
   maxAge: 15 * 60 * 1000
 }
 
 const refreshCookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
+  sameSite: 'none',
   maxAge: 7 * 24 * 60 * 60 * 1000
 }
 
@@ -61,12 +61,12 @@ export const login = async (req, res) => {
     const existingAdmin = await AdminModel.findOne({ email: email.toLowerCase() }) .select('+password')
     if (!existingAdmin) return res.status(401).json({ msg: "invalid credentials" })
 
-    // if (existingAdmin.isLocked()) {
-    //   console.log(existingAdmin.lockUntil);
+    if (existingAdmin.isLocked()) {
+      console.log(existingAdmin.lockUntil);
       
-    //   const minsLeft = Math.ceil((existingAdmin.lockUntil - Date.now()) / 60000);
-    //   return res.status(423).json({ msg: `account locked. try again in ${minsLeft} minutes.` })
-    // }
+      const minsLeft = Math.ceil((existingAdmin.lockUntil - Date.now()) / 60000);
+      return res.status(423).json({ msg: `account locked. try again in ${minsLeft} minutes.` })
+    }
     const isMatch = await existingAdmin.comparePassword(password)
     if (!isMatch) {
       console.log("Wrong password");
