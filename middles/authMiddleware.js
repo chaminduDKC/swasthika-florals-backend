@@ -6,10 +6,11 @@ import AdminModel from '../schema/AdminModel.js'
 dotenv.config()
 
 const protect = async (req, res, next) => {
+  console.log('cookies received:', req.cookies)
   try {
     const token = req.cookies.sfd_access
 
-    if (!token) return res.status(401).json({ msg: "Unauthorized" })
+    if (!token) return res.status(401).json({ msg: "Unauthorized"})
       console.log(token);
       
     let decoded;

@@ -111,6 +111,7 @@ export const login = async (req, res) => {
 export const refresh = async (req, res) => {
   try {
     const refreshToken = req.cookies.sfd_refresh;
+     console.log('refresh cookies:', req.cookies) 
     if (!refreshToken) return res.status(401).json({ msg: "empty refresh token" })
 
     // verify token
