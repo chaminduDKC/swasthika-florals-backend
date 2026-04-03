@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, getMe, forgotPassword, verifyOtp, setupAdmin, resetPassword, logout } from "../controllers/AuthController.js";
+import { login, getMe, forgotPassword, verifyOtp,  setupAdmin, resetPassword, logout, refresh } from "../controllers/AuthController.js";
 import { loginLimiter, otpLimiter, verifyLimiter } from "../middles/rateLimiter.js";
 import protect from "../middles/authMiddleware.js";
 
@@ -12,6 +12,7 @@ router.post('/forgot-password',             otpLimiter, forgotPassword)
 router.post('/reset-password',              resetPassword)
 router.post('/setup',                       setupAdmin)   // Run ONCE to create first admin
 router.post('/verify-otp',                  verifyLimiter, verifyOtp)
+router.post('/refresh',  refresh)
 
 // ── PROTECTED routes (token required) ────────────────────
 // authMiddleware runs FIRST, then getMe

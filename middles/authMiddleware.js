@@ -25,7 +25,7 @@ const protect = async (req, res, next) => {
       if (error.name === "TokenExpiredError") return res.status(401).json({ message: 'Token expired', expired: true })
         console.log(error);
         
-        return res.status(401).json({ message: 'Invalid token' })
+        return res.status(401).json({ msg: 'Unauthorized', expired: true })
     }
 
     const isBlackListed = await TokenBlacklistModel.findOne({token}) // find always return an array even it's empty. so it's truthy when even empty

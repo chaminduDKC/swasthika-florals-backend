@@ -8,14 +8,14 @@ import { log } from "console";
 
 dotenv.config();
 
-const createAccessToken = (id) => jwt.sign({ id }, process.env.ACCESS_TOKEN, { expiresIn: '15m' })
+const createAccessToken = (id) => jwt.sign({ id }, process.env.ACCESS_TOKEN, { expiresIn: '30m' })
 const createRefreshToken = (id) => jwt.sign({ id }, process.env.REFRESH_TOKEN, { expiresIn: '7d' })
 
 const accessCookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'none',
-  maxAge: 15 * 60 * 1000
+  maxAge: 30 * 60 * 1000
 }
 
 const refreshCookieOptions = {
@@ -109,6 +109,8 @@ export const login = async (req, res) => {
 }
 
 export const refresh = async (req, res) => {
+  console.log("refresh called");
+  
   try {
     const refreshToken = req.cookies.sfd_refresh;
      console.log('refresh cookies:', req.cookies) 
